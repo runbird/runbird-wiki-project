@@ -1,10 +1,12 @@
-package com.example.wiki;
+package com.runbird.wiki;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.stereotype.Component;
 
 @SpringBootTest
-class RunbirdWikiProjectApplicationTests {
+@Component("com.runbird")
+class WikiApplicationTests {
 
     @Test
     void contextLoads() {
