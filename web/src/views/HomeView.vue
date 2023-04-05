@@ -10,7 +10,7 @@
         <a-sub-menu key="sub1">
           <template #title>
               <span>
-                <user-outlined />
+                <user-outlined/>
                 subnav 1
               </span>
           </template>
@@ -22,7 +22,7 @@
         <a-sub-menu key="sub2">
           <template #title>
               <span>
-                <laptop-outlined />
+                <laptop-outlined/>
                 subnav 2
               </span>
           </template>
@@ -34,7 +34,7 @@
         <a-sub-menu key="sub3">
           <template #title>
               <span>
-                <notification-outlined />
+                <notification-outlined/>
                 subnav 3
               </span>
           </template>
@@ -54,20 +54,50 @@
       <a-layout-content
           :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
       >
-        Content
+        <pre>
+{{ ebooks }}
+{{ ebooks2 }}
+        </pre>
       </a-layout-content>
     </a-layout>
   </a-layout>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import {defineComponent, onMounted, reactive, ref, toRef} from 'vue';
 // import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
+import axios from 'axios';
 
 export default defineComponent({
   name: 'HomeView',
   components: {
     // HelloWorld,
+  },
+  //setup执行的时候界面还没渲染好
+  setup() {
+    console.log("setup")
+    // axios.get("/hello").then(
+    //     (function (response) {
+    //       console.log(response);
+    //     })
+    // )
+    //ref和reactive都可以使用
+    const ebooks = ref();
+    const ebooks1 = reactive({books: []})
+    //初始化的参数方法尽量进入 onMounted
+    onMounted(() => {
+      axios.get("http://127.0.0.1:8880/ebook/list?name=Spring").then((response) => {
+        const data = response.data;
+        ebooks.value = data.content;
+        ebooks1.books = data.content;
+        console.log(response);
+      });
+    })
+
+    return {
+      ebooks,
+      ebooks2: toRef(ebooks1, "books")
+    }
   },
 });
 </script>
